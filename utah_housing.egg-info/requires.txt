@@ -1,0 +1,10 @@
+requests>=2.31
+pandas>=2.0
+numpy>=1.26
+statsmodels>=0.14
+linearmodels>=5.3
+
+[dev]
+pytest>=8.0
+ipykernel
+jupyterlab

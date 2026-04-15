@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+tests/test_utah_housing.py
+utah_housing/__init__.py
+utah_housing/fetch.py
+utah_housing/fixed_effects_model.py
+utah_housing/variables.py
+utah_housing.egg-info/PKG-INFO
+utah_housing.egg-info/SOURCES.txt
+utah_housing.egg-info/dependency_links.txt
+utah_housing.egg-info/requires.txt
+utah_housing.egg-info/top_level.txt
