@@ -1,7 +1,7 @@
 Metadata-Version: 2.4
 Name: utah_housing
-Version: 0.1.1
-Summary: Census ACS data pull and fixed effects models for Utah housing research
+Version: 0.1.2
+Summary: Census ACS data pull and fixed effects models for Utah housing analysis
 License: MIT
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
@@ -19,7 +19,7 @@ Dynamic: license-file
 
 # utah-housing
 
-Census ACS 5-year data fetcher and fixed effects models for Utah housing research.
+Census American Community Survey data fetcher and fixed effects models for Utah housing research.
 
 ## Setup
 
