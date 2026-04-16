@@ -13,25 +13,28 @@ from utah_housing.variables import ALL_VARS, RENAME_MAP, SENTINEL_COLS, PREDICTO
 from utah_housing.fixed_effects_model import run_model, run_diagnostics
 
 
-# ── Variable tests ─────────────────────────────────────────────────────────────
+# Variable tests - check that the variable configuration in variables.py is internally consistent. 
 
 def test_all_vars_unique():
+    # make sure no column name appears twice
     assert len(ALL_VARS) == len(set(ALL_VARS)), "Duplicate variables in ALL_VARS"
 
 
 def test_rename_map_covers_all_vars():
+    # verify that every column code has a corresponding descriptive name in RENAME_MAP
     missing = [v for v in ALL_VARS if v not in RENAME_MAP]
     assert not missing, f"Variables missing from RENAME_MAP: {missing}"
 
 
 def test_sentinel_cols_use_renamed_names():
+    # confirm that SENTINEL_COLS references the renamed column names and not the codes 
     renamed = set(RENAME_MAP.values())
     bad = [c for c in SENTINEL_COLS if c not in renamed]
     assert not bad, f"SENTINEL_COLS use raw ACS codes (should use renamed): {bad}"
 
 
 
-# ── Fetch tests ────────────────────────────────────────────────────────────────
+# Fetch tests - check that fetch_year is very verbose when an API key isn't provided
 
 def test_missing_api_key_raises():
     # fetch_year should raise EnvironmentError when CENSUS_API_KEY is unset
@@ -45,10 +48,10 @@ def test_missing_api_key_raises():
             os.environ["CENSUS_API_KEY"] = key
 
 
-# ── Model tests (using synthetic data) ────────────────────────────────────────
+# Model tests using made-up data (because real data takes a bit to load). 
 
 def _make_synthetic(n_tracts=40, n_years=5, seed=42) -> pd.DataFrame:
-    """Minimal synthetic panel for model smoke tests."""
+
     rng = np.random.default_rng(seed)
     years = list(range(2015, 2015 + n_years))
     geoids = [f"49{str(i).zfill(9)}" for i in range(n_tracts)]

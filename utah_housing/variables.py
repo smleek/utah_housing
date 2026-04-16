@@ -1,11 +1,11 @@
 """
-Variable definitions for Utah ACS housing data pull.
+Variable definitions for Utah American Community Survey housing data pull.
 
-All variable lists, the outcome, and predictor sets live here so they can be
-imported consistently by fetch.py, models.py, and any downstream notebooks.
+All variable lists, the outcome, and predictor sets are here to facilitate importing
+by fetch.py, models.py, and any future work. 
 """
 
-# ── ACS Variable Lists ─────────────────────────────────────────────────────────
+# Variable Lists
 
 B25024_VARS = [f"B25024_{str(i).zfill(3)}E" for i in range(1, 12)]
 B25001_VARS = ["B25001_001E"]
@@ -22,7 +22,7 @@ ALL_VARS: list[str] = (
     + B25008_VARS + B25119_VARS + B25032_VARS + B25088_VARS + B19013_VARS
 )
 
-# ── Column Rename Map ──────────────────────────────────────────────────────────
+# Column Renaming
 
 RENAME_MAP: dict[str, str] = {
     # B25024 - Units in Structure
@@ -98,12 +98,12 @@ SENTINEL_COLS: list[str] = [
     "median_household_income",
 ]
 
-# ── Model Variable Sets ────────────────────────────────────────────────────────
+# Model Variable Sets (outcome variable, predictor variables)
 
 OUTCOME = "median_owner_costs_with_mortgage"
 
 PREDICTORS: list[str] = [    
-    "pct_sf_renter_occupied",   # SF homes rented out (investor proxy)
+    "pct_sf_renter_occupied",   # single-family homes rented out (investor proxy)
     "median_household_income",  # demand-side income
     "owner_renter_income_gap",  # income stratification
     "pct_vacant",               # market slack

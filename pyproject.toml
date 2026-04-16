@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "utah_housing"
-version = "0.1.1"
-description = "Census ACS data pull and fixed effects models for Utah housing research"
+version = "0.1.2"
+description = "Census ACS data pull and fixed effects models for Utah housing analysis"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }

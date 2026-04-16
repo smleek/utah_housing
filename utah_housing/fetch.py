@@ -1,18 +1,3 @@
-"""
-Census ACS 5-Year data fetcher for Utah housing analysis.
-
-API key is read from the CENSUS_API_KEY environment variable.
-Obtain a key (for free) at: https://api.census.gov/data/key_signup.html
-
-Example usage:
-    import os
-    os.environ["CENSUS_API_KEY"] = "your_key_here"  # or set in shell
-
-    from utah_housing import fetch_all_years
-    df = fetch_all_years(years=range(2009, 2024))
-    df.to_csv("utah_housing_2009_2023.csv", index=False)
-"""
-
 from __future__ import annotations
 import os
 import warnings
@@ -20,16 +5,16 @@ import requests
 import pandas as pd
 from .variables import ALL_VARS, RENAME_MAP, SENTINEL_COLS
 
-STATE = "49"  # Utah FIPS code
+STATE = "49"  # Utah Federal Information Processing Standards (FIPS) code
 _BASE_URL = "https://api.census.gov/data/{year}/acs/acs5"
-_CHUNK_SIZE = 49  # Census API limit is 50 variables. we leave one slot open for NAME
+_CHUNK_SIZE = 49  # Census API limit is 50 variables. We leave one slot open for NAME
 
 # begin helper functions 
 
 def _get_api_key() -> str:
     key = os.environ.get("CENSUS_API_KEY", "").strip()
     if not key:
-        raise EnvironmentError("API key is read from the CENSUS_API_KEY environment variable. " \
+        raise EnvironmentError("API key required! API key is read from the CENSUS_API_KEY environment variable. " \
         "Obtain a key (for free) at: https://api.census.gov/data/key_signup.html")
     return key
 
@@ -63,9 +48,9 @@ def _fetch_chunk(base_url: str, chunk: list[str], geo_params: dict,) -> pd.DataF
 
 def _add_derived_variables(df: pd.DataFrame) -> pd.DataFrame:
     
-    # calculates columns that are derived - single_family_units, pct_single_family, pct_vacant, 
-    # pct_occupied, pct_renter_occupied, pct_owner_occupied, renter_single_family, 
-    # pct_sf_renter_occupied, owner_renter_income_gap
+    """calculates columns that are derived - single_family_units, pct_single_family, pct_vacant, 
+    pct_occupied, pct_renter_occupied, pct_owner_occupied, renter_single_family, 
+    pct_sf_renter_occupied, owner_renter_income_gap"""
 
     df = df.copy()
 
@@ -88,11 +73,9 @@ def _add_derived_variables(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def fetch_year(year: int, api_key: str | None = None, verbose: bool = True) -> pd.DataFrame | None:
-    """
-    Fetch ACS 5-year estimates for all Utah census tracts for a single year.
+    """ Fetch data for all Utah census tracts for a single year.
 
     Parameters
-    ----------
     year : int
         Survey year (2009–2023).
     api_key : str, optional
@@ -100,10 +83,7 @@ def fetch_year(year: int, api_key: str | None = None, verbose: bool = True) -> p
     verbose : bool
         Print progress. Default True.
 
-    Returns
-    -------
-    pd.DataFrame or None
-        Long-format DataFrame with one row per census tract, or None on failure.
+    Returns: pandas dataframe, or None if failure. 
     """
     key = api_key or _get_api_key()
     base_url = _BASE_URL.format(year=year)
@@ -152,10 +132,9 @@ def fetch_year(year: int, api_key: str | None = None, verbose: bool = True) -> p
 
 def fetch_all_years(years: range | list[int] = range(2009, 2024), api_key: str | None = None, verbose: bool = True,) -> pd.DataFrame:
     """
-    Fetch ACS 5-year estimates for all Utah census tracts across multiple years.
+    Fetch data for all Utah census tracts across multiple years.
 
     Parameters
-    ----------
     years : range or list[int]
         Survey years to pull. Defaults to 2009–2023.
     api_key : str, optional
@@ -163,21 +142,10 @@ def fetch_all_years(years: range | list[int] = range(2009, 2024), api_key: str |
     verbose : bool
         Print progress. Default True.
 
-    Returns
-    -------
-    pd.DataFrame
-        Long-format DataFrame: one row per (tract × year).
-
-    Example
-    -------
-    >>> import os
-    >>> os.environ["CENSUS_API_KEY"] = "your_key"
-    >>> from utah_housing import fetch_all_years
-    >>> df = fetch_all_years(years=range(2015, 2024))
-    >>> df.to_csv("utah_housing.csv", index=False)
+    Returns pandas dataframe, with one row per tract per year. 
     """
     if verbose:
-        print(f"Pulling ACS 5-year estimates for Utah ({min(years)}–{max(years)})...\n")
+        print(f"Pulling data for Utah ({min(years)}–{max(years)})...\n")
 
     frames = [fetch_year(y, api_key=api_key, verbose=verbose) for y in years]
     good_frames = [f for f in frames if f is not None]

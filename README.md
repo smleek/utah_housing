@@ -1,6 +1,6 @@
 # utah-housing
 
-Census ACS 5-year data fetcher and fixed effects models for Utah housing research.
+Census American Community Survey data fetcher and fixed effects models for Utah housing research.
 
 ## Setup
 
