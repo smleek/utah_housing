@@ -1,11 +1,16 @@
 # utah-housing
 
-Census American Community Survey data fetcher and fixed effects models for Utah housing research.
+Census American Community Survey data fetcher and fixed effects model for Utah housing research.
 
 ## Setup
 
 ```bash
-pip install -e ".[dev]"
+# Recommended, but not required: create a virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Mac/Linux
+# .venv\Scripts\activate   # Windows
+
+pip install utah-housing
 export CENSUS_API_KEY=your_key_here  # https://api.census.gov/data/key_signup.html
 ```
 
@@ -43,7 +48,7 @@ coefs.to_csv("results.csv")
 ### Run diagnostics
 
 ```python
-from utah_housing.models import run_diagnostics
+from utah_housing.fixed_effect_model import run_diagnostics
 from utah_housing import PREDICTORS
 
 run_diagnostics(df, PREDICTORS)
